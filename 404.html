@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <!-- 添加霓虹按钮字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* Embedded CSS */
@@ -32,28 +34,36 @@
             animation: hueRotate 6s ease-in-out 3s infinite; /* Apply hue rotation animation */
         }
 
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         /* Container for SVG centering */
         .svg-container {
             position: absolute;
             left: 50%;
             /* Adjust top slightly to make space for text below */
-            top: 45%; /* Move SVG container slightly up */
+            top: 40%; /* 调整SVG容器位置 */
             transform: translate(-50%, -50%);
             width: 90%; /* Responsive width */
             max-width: 600px; /* Max width for larger screens */
+            z-index: 1; /* 确保在粒子上方 */
         }
 
         /* Main heading text */
         h2 {
             position: absolute;
             /* Position below the SVG container */
-            top: 65%; /* Adjust top position to be below the SVG */
+            top: 60%; /* 调整标题位置 */
             left: 50%;
             width: 90%; /* Ensure text wraps on smaller screens */
             max-width: 600px; /* Match SVG width */
-            /* Remove margin-top, rely on top and transform */
-            /* margin-top: 150px; */ /* Removed */
-            font-size: clamp(1rem, 3vw, 1.5rem); /* Adjusted font size for subtitle */
+            font-size: clamp(1.2rem, 3vw, 1.8rem); /* 增加字体大小 */
             text-transform: uppercase;
             /* Center horizontally and adjust vertical position */
             transform: translate(-50%, -50%);
@@ -65,6 +75,54 @@
             /* Animations: Fade in, flicker, and hue rotate */
             animation: fadeInText 3s ease-in 3.5s forwards, flicker4 5s linear 7.5s infinite, hueRotate 6s ease-in-out 3s infinite;
             z-index: 10; /* Ensure text is above SVGs */
+        }
+
+        /* 返回按钮样式 */
+        .home-button {
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 10px 25px;
+            color: #ff005d;
+            background: transparent;
+            border: 2px solid #ff005d;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #ff005d, 0 0 20px rgba(255, 0, 93, 0.3);
+            cursor: pointer;
+            z-index: 10;
+            overflow: hidden;
+            transition: all 0.3s;
+            animation: fadeInButton 4s ease-in 4s forwards, buttonGlow 2s ease-in-out infinite alternate;
+            opacity: 0;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 0, 93, 0.1);
+            box-shadow: 0 0 15px #ff005d, 0 0 30px rgba(255, 0, 93, 0.6);
+            transform: translate(-50%, -50%) scale(1.05);
+            letter-spacing: 3px;
+        }
+
+        .home-button:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        /* 按钮的淡入效果 */
+        @keyframes fadeInButton {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* 按钮的脉冲光效 */
+        @keyframes buttonGlow {
+            0% { box-shadow: 0 0 10px #ff005d, 0 0 20px rgba(255, 0, 93, 0.3); }
+            100% { box-shadow: 0 0 15px #ff005d, 0 0 25px rgba(255, 0, 93, 0.6); }
         }
 
         /* SVG Wrappers */
@@ -212,10 +270,44 @@
             100% { filter: hue-rotate(0deg); } /* Return to original */
         }
 
+        /* 添加小提示文字样式 */
+        .glitch-subtitle {
+            position: absolute;
+            top: 68%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 0, 93, 0.7);
+            text-transform: lowercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            z-index: 5;
+            animation: fadeInSubtitle 4s ease-in 5s forwards, subtitleGlitch 4s linear 6s infinite;
+        }
+
+        @keyframes fadeInSubtitle {
+            0% { opacity: 0; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes subtitleGlitch {
+            0% { transform: translate(-50%, -50%) skew(0deg, 0deg); }
+            1% { transform: translate(-51%, -50%) skew(1deg, 0deg); }
+            2% { transform: translate(-50%, -50%) skew(0deg, 0deg); }
+            45% { transform: translate(-50%, -50%) skew(0deg, 0deg); }
+            46% { transform: translate(-49%, -51%) skew(-1deg, 1deg); color: rgba(0, 255, 255, 0.7); }
+            47% { transform: translate(-50%, -50%) skew(0deg, 0deg); color: rgba(255, 0, 93, 0.7); }
+            98% { transform: translate(-50%, -50%) skew(0deg, 0deg); }
+            99% { transform: translate(-51%, -49%) skew(1deg, -1deg); color: rgba(0, 255, 255, 0.7); }
+            100% { transform: translate(-50%, -50%) skew(0deg, 0deg); color: rgba(255, 0, 93, 0.7); }
+        }
     </style>
 </head>
 <body>
     <div class="background-gradient"></div>
+    <!-- 粒子容器，将由JS生成粒子 -->
+    <div id="particles"></div>
 
     <div class="svg-container">
         <svg id="svgWrap_2" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 700 250">
@@ -247,12 +339,103 @@
     </svg>
 
     <h2>哎呀！您访问的页面不存在或已被移动</h2>
+    <div class="glitch-subtitle">系统错误 // 请重新定位 // 404</div>
+    <button class="home-button" onclick="window.location.href='https://www.djxs.xyz'">返回首页</button>
 
-    <!-- Cloudflare-specific code (optional, for custom error pages) -->
+    <!-- 添加粒子效果脚本 -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // You can access Cloudflare error details if available
-        // This is optional and will work when deployed as a Cloudflare custom error page
+        // 创建粒子效果
+        const particlesContainer = document.getElementById('particles');
+        const numParticles = 100; // 粒子数量
+        
+        // 生成粒子
+        for (let i = 0; i < numParticles; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // 随机粒子大小 (1-3px)
+            const size = Math.random() * 2 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // 随机初始位置
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            particle.style.left = `${x}%`;
+            particle.style.top = `${y}%`;
+            
+            // 随机亮度
+            const opacity = Math.random() * 0.5 + 0.1;
+            particle.style.opacity = opacity;
+            
+            // 添加到容器
+            particlesContainer.appendChild(particle);
+            
+            // 随机动画
+            animateParticle(particle);
+        }
+        
+        // 粒子动画函数
+        function animateParticle(particle) {
+            // 随机动画持续时间 (10-30秒)
+            const duration = Math.random() * 20000 + 10000;
+            
+            // 随机目标位置
+            const targetX = Math.random() * 100;
+            const targetY = Math.random() * 100;
+            
+            // 应用动画
+            particle.animate(
+                [
+                    { 
+                        left: particle.style.left, 
+                        top: particle.style.top,
+                        opacity: particle.style.opacity
+                    },
+                    { 
+                        left: `${targetX}%`, 
+                        top: `${targetY}%`,
+                        opacity: Math.random() * 0.5 + 0.1
+                    }
+                ], 
+                {
+                    duration: duration,
+                    easing: 'linear',
+                    iterations: 1
+                }
+            ).onfinish = function() {
+                // 重置粒子位置
+                particle.style.left = `${targetX}%`;
+                particle.style.top = `${targetY}%`;
+                
+                // 重新应用动画
+                animateParticle(particle);
+            };
+        }
+        
+        // 鼠标移动时粒子轻微跟随效果
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(function(particle) {
+                // 获取当前位置
+                const rect = particle.getBoundingClientRect();
+                const x = rect.left / window.innerWidth * 100;
+                const y = rect.top / window.innerHeight * 100;
+                
+                // 轻微移动粒子 (偏移量很小)
+                const offsetX = (mouseX - 0.5) * 5;
+                const offsetY = (mouseY - 0.5) * 5;
+                
+                // 应用轻微变化
+                particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+        });
+        
+        // Cloudflare错误处理 (如果需要)
         if (typeof ErrorEvent !== 'undefined') {
             console.log('Error code:', ErrorEvent.error);
         }

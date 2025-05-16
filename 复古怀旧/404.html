@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'ZCOOL QingKe HuangYou', 'VT323', monospace;
+        }
+
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffd166;
+            --dark-color: #2f3542;
+            --light-color: #f7f7f7;
+            --bg-color: #f0f0f0;
+            --text-color: #333333;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+                linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+                linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 复古背景 */
+        .retro-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* 复古元素 */
+        .retro-element {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.7;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* 复古图案 */
+        .pattern {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .pattern1 { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="50" height="50" fill="%23ff6b6b"/><rect x="50" y="50" width="50" height="50" fill="%23ff6b6b"/></svg>'); }
+        .pattern2 { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%234ecdc4"/></svg>'); }
+        .pattern3 { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill="%23ffd166"/></svg>'); }
+
+        /* 404错误卡片 */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .error-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--dark-color);
+        }
+
+        .error-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 2s infinite ease-in-out;
+            text-shadow: 2px 2px 0 var(--dark-color);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .error-number {
+            font-size: 100px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            line-height: 1;
+            font-family: 'Press Start 2P', 'ZCOOL KuaiLe', cursive;
+            font-size: 60px;
+            text-shadow: 4px 4px 0 var(--primary-color);
+            letter-spacing: -2px;
+        }
+
+        .error-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 0 var(--light-color);
+        }
+
+        .error-message {
+            font-size: 18px;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 700;
+            transition: var(--transition);
+            border: 3px solid var(--dark-color);
+            text-shadow: 1px 1px 0 var(--dark-color);
+            box-shadow: 0 4px 0 var(--dark-color);
+            position: relative;
+            top: 0;
+        }
+
+        .home-button:hover {
+            background-color: #3dbdb5;
+        }
+
+        .home-button:active {
+            box-shadow: 0 1px 0 var(--dark-color);
+            top: 3px;
+        }
+
+        .home-button i {
+            margin-right: 8px;
+        }
+
+        /* 像素风格装饰 */
+        .pixel-decoration {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-color);
+            border: 2px solid var(--dark-color);
+            z-index: 5;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .error-number {
+                font-size: 40px;
+            }
+            
+            .error-title {
+                font-size: 20px;
+            }
+            
+            .error-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="retro-bg" id="retro-bg"></div>
+    
+    <!-- 像素风格装饰 -->
+    <div class="pixel-decoration" style="top: 20px; left: 20px;"></div>
+    <div class="pixel-decoration" style="top: 20px; right: 20px;"></div>
+    <div class="pixel-decoration" style="bottom: 20px; left: 20px;"></div>
+    <div class="pixel-decoration" style="bottom: 20px; right: 20px;"></div>
+    
+    <div class="container">
+        <div class="error-card">
+            <i class="fas fa-ghost error-icon"></i>
+            <div class="error-number">404</div>
+            <h1 class="error-title">游戏存档丢失</h1>
+            <p class="error-message">您寻找的页面已被吃豆人吃掉了<br>或许它已经进入了另一个关卡</p>
+            <a href="index.html" class="home-button">
+                <i class="fas fa-redo"></i> 重新开始
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 创建复古元素
+        function createRetroElements() {
+            const retroBg = document.getElementById('retro-bg');
+            
+            // 创建复古图案
+            const patternCount = 15;
+            const patternTypes = ['pattern1', 'pattern2', 'pattern3'];
+            
+            for (let i = 0; i < patternCount; i++) {
+                const pattern = document.createElement('div');
+                pattern.classList.add('pattern');
+                
+                // 随机选择图案类型
+                const randomType = patternTypes[Math.floor(Math.random() * patternTypes.length)];
+                pattern.classList.add(randomType);
+                
+                // 随机位置和旋转
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomRotation = Math.random() * 360;
+                
+                pattern.style.left = `${randomLeft}%`;
+                pattern.style.top = `${randomTop}%`;
+                pattern.style.transform = `rotate(${randomRotation}deg)`;
+                
+                retroBg.appendChild(pattern);
+            }
+            
+            // 创建复古元素
+            const elementCount = 10;
+            const retroShapes = [
+                '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect x="5" y="5" width="30" height="30" fill="%23ff6b6b" stroke="%232f3542" stroke-width="2"/></svg>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="%234ecdc4" stroke="%232f3542" stroke-width="2"/></svg>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><polygon points="20,5 35,35 5,35" fill="%23ffd166" stroke="%232f3542" stroke-width="2"/></svg>'
+            ];
+            
+            for (let i = 0; i < elementCount; i++) {
+                const element = document.createElement('div');
+                element.classList.add('retro-element');
+                
+                // 随机选择形状
+                const randomShape = retroShapes[Math.floor(Math.random() * retroShapes.length)];
+                element.innerHTML = randomShape;
+                
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                
+                element.style.left = `${randomLeft}%`;
+                element.style.top = `${randomTop}%`;
+                element.style.animationDelay = `${randomDelay}s`;
+                
+                retroBg.appendChild(element);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createRetroElements();
+        });
+    </script>
+</body>
+</html>

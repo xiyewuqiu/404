@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面 - 未来科技</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+        }
+
+        :root {
+            --primary-color: #00e5ff;
+            --secondary-color: #2979ff;
+            --accent-color: #651fff;
+            --dark-bg: #0a0e17;
+            --darker-bg: #060a12;
+            --card-bg: rgba(16, 23, 41, 0.8);
+            --text-color: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-disabled: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(0, 229, 255, 0.3);
+            --shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(41, 121, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(101, 31, 255, 0.1) 0%, transparent 20%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 未来科技背景 */
+        .tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* 网格线 */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+        }
+
+        /* 浮动粒子 */
+        .particle {
+            position: absolute;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: 1;
+            filter: blur(1px);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-30px) translateX(30px);
+            }
+            50% {
+                transform: translateY(0) translateX(60px);
+            }
+            75% {
+                transform: translateY(30px) translateX(30px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        /* 数据流 */
+        .data-stream {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--primary-color), transparent);
+            opacity: 0.6;
+            z-index: 1;
+            animation: dataFlow 8s infinite linear;
+        }
+
+        @keyframes dataFlow {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* 登录容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                transparent, 
+                transparent, 
+                var(--primary-color)
+            );
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        .login-card::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            background: var(--card-bg);
+            border-radius: 9px;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .login-header {
+            display: flex;
+            align-items: center;
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            color: var(--dark-bg);
+            font-size: 24px;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+        }
+
+        .welcome-text h1 {
+            font-size: 22px;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .welcome-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .app-name {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 16px;
+            color: var(--text-color);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .app-name::before,
+        .app-name::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+        }
+
+        .app-name::before {
+            left: 30%;
+        }
+
+        .app-name::after {
+            right: 30%;
+        }
+
+        .login-form {
+            padding: 20px 30px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 38px;
+            color: var(--primary-color);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+        }
+
+        .remember-me input {
+            margin-right: 5px;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.3);
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .register-prompt {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .register-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .register-link:hover {
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tech-bg" id="tech-bg">
+        <div class="grid-lines"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="welcome-text">
+                    <h1>欢迎回来</h1>
+                    <p>请登录您的账号继续使用</p>
+                </div>
+            </div>
+
+            <div class="app-name">量子系统</div>
+
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名或邮箱">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" name="password" placeholder="请输入您的密码">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密码?</a>
+                    </div>
+
+                    <button type="submit" class="login-button">登 录</button>
+
+                    <div class="register-prompt">
+                        还没有账号? <a href="register.html" class="register-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建粒子
+        function createParticles() {
+            const techBg = document.getElementById('tech-bg');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 随机大小和位置
+                const size = 2 + Math.random() * 4;
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 20;
+                const randomDuration = 15 + Math.random() * 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${randomLeft}%`;
+                particle.style.top = `${randomTop}%`;
+                particle.style.animationDelay = `${randomDelay}s`;
+                particle.style.animationDuration = `${randomDuration}s`;
+                
+                techBg.appendChild(particle);
+            }
+        }
+        
+        // 创建数据流
+        function createDataStreams() {
+            const techBg = document.getElementById('tech-bg');
+            const streamCount = 15;
+            
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.classList.add('data-stream');
+                
+                // 随机位置和高度
+                const height = 50 + Math.random() * 150;
+                const randomLeft = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                const randomDuration = 3 + Math.random() * 5;
+                
+                stream.style.height = `${height}px`;
+                stream.style.left = `${randomLeft}%`;
+                stream.style.animationDelay = `${randomDelay}s`;
+                stream.style.animationDuration = `${randomDuration}s`;
+                
+                techBg.appendChild(stream);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createParticles();
+            createDataStreams();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面 - 流体科技</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Noto Sans SC', sans-serif;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #06b6d4;
+            --accent-color: #f472b6;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--dark-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 流体背景 */
+        .fluid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .fluid-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.5;
+            animation: fluidMove 20s infinite alternate ease-in-out;
+        }
+
+        .shape1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-light));
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .shape3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--success-color));
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 10s;
+        }
+
+        @keyframes fluidMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(100px, 50px) scale(1.1);
+            }
+            100% {
+                transform: translate(50px, 100px) scale(0.9);
+            }
+        }
+
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            z-index: 1;
+            animation: particleFloat 15s infinite linear;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* 数字雨效果 */
+        .digital-rain {
+            position: absolute;
+            color: rgba(99, 102, 241, 0.5);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1;
+            z-index: 1;
+            white-space: nowrap;
+            animation: digitalRain 8s linear infinite;
+        }
+
+        @keyframes digitalRain {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* 飘落的代码片段 */
+        .code-snippet {
+            position: absolute;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 1;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: codeSnippetFall 15s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes codeSnippetFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(10deg) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        /* 浮动图标 */
+        .floating-icon {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            z-index: 1;
+            animation: floatingIcon 10s infinite ease-in-out;
+        }
+
+        @keyframes floatingIcon {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+        }
+
+        /* 登录卡片 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: cardAppear 1s ease-out;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            padding: 30px 30px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.2) 50%, transparent 75%);
+            top: 0;
+            left: -100%;
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            20% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .welcome-text h1 {
+            font-size: 24px;
+            color: var(--light-color);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .welcome-text p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-form {
+            padding: 20px 30px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--light-color);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            color: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+        }
+
+        .remember-me label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .forgot-password {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--light-color);
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.2) 50%, transparent 75%);
+            top: 0;
+            left: -100%;
+            transition: 0.5s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .register-link {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .register-link:hover {
+            color: var(--light-color);
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 20px 20px 15px;
+            }
+
+            .login-form {
+                padding: 15px 20px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fluid-bg">
+        <div class="fluid-shape shape1"></div>
+        <div class="fluid-shape shape2"></div>
+        <div class="fluid-shape shape3"></div>
+        <div id="particles"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-fingerprint"></i>
+                </div>
+                <div class="welcome-text">
+                    <h1>欢迎回来</h1>
+                    <p>请登录您的账号继续使用</p>
+                </div>
+            </div>
+
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="username">用户名 / 邮箱</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名或邮箱">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" name="password" placeholder="请输入您的密码">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密码?</a>
+                    </div>
+
+                    <button type="submit" class="login-button">登 录</button>
+
+                    <div class="register-prompt">
+                        还没有账号? <a href="register.html" class="register-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建粒子效果
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // 随机位置、大小和延迟
+                const randomLeft = Math.random() * 100;
+                const randomSize = 1 + Math.random() * 3;
+                const randomDelay = Math.random() * 10;
+                const randomDuration = 10 + Math.random() * 20;
+                const randomOpacity = 0.3 + Math.random() * 0.7;
+
+                particle.style.left = `${randomLeft}%`;
+                particle.style.width = `${randomSize}px`;
+                particle.style.height = `${randomSize}px`;
+                particle.style.opacity = randomOpacity;
+                particle.style.animationDelay = `${randomDelay}s`;
+                particle.style.animationDuration = `${randomDuration}s`;
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 创建数字雨效果
+        function createDigitalRain() {
+            const particlesContainer = document.getElementById('particles');
+            const rainCount = 15;
+            const characters = "01010101010101";
+
+            for (let i = 0; i < rainCount; i++) {
+                const digitalRain = document.createElement('div');
+                digitalRain.classList.add('digital-rain');
+
+                // 随机生成数字字符串
+                let rainText = "";
+                const length = 5 + Math.floor(Math.random() * 15);
+                for (let j = 0; j < length; j++) {
+                    rainText += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                digitalRain.textContent = rainText;
+
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomDelay = Math.random() * 15;
+                const randomDuration = 5 + Math.random() * 10;
+
+                digitalRain.style.left = `${randomLeft}%`;
+                digitalRain.style.animationDelay = `${randomDelay}s`;
+                digitalRain.style.animationDuration = `${randomDuration}s`;
+
+                particlesContainer.appendChild(digitalRain);
+            }
+        }
+
+        // 创建飘落的代码片段
+        function createCodeSnippets() {
+            const particlesContainer = document.getElementById('particles');
+            const snippetCount = 8;
+            const snippets = [
+                "function() { ... }",
+                "const data = [];",
+                "if (x > 0) { ... }",
+                "return true;",
+                "await fetch('/api');",
+                "import React from 'react';",
+                "export default class",
+                "<div className='container'>",
+                "addEventListener('click', () => {})",
+                "console.log('Hello');"
+            ];
+
+            for (let i = 0; i < snippetCount; i++) {
+                const codeSnippet = document.createElement('div');
+                codeSnippet.classList.add('code-snippet');
+
+                // 随机选择代码片段
+                const randomSnippet = snippets[Math.floor(Math.random() * snippets.length)];
+                codeSnippet.textContent = randomSnippet;
+
+                // 随机位置、旋转和延迟
+                const randomLeft = Math.random() * 100;
+                const randomRotation = (Math.random() * 20) - 10;
+                const randomDelay = Math.random() * 20;
+                const randomDuration = 15 + Math.random() * 15;
+
+                codeSnippet.style.left = `${randomLeft}%`;
+                codeSnippet.style.transform = `rotate(${randomRotation}deg)`;
+                codeSnippet.style.animationDelay = `${randomDelay}s`;
+                codeSnippet.style.animationDuration = `${randomDuration}s`;
+
+                particlesContainer.appendChild(codeSnippet);
+            }
+        }
+
+        // 创建浮动图标
+        function createFloatingIcons() {
+            const particlesContainer = document.getElementById('particles');
+            const iconCount = 10;
+            const icons = [
+                "fa-code", "fa-database", "fa-wifi", "fa-cloud",
+                "fa-microchip", "fa-server", "fa-laptop-code", "fa-network-wired",
+                "fa-shield-alt", "fa-lock", "fa-key", "fa-cog"
+            ];
+
+            for (let i = 0; i < iconCount; i++) {
+                const iconElement = document.createElement('i');
+                const iconContainer = document.createElement('div');
+                iconContainer.classList.add('floating-icon');
+
+                // 随机选择图标
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                iconElement.classList.add('fas', randomIcon);
+                iconContainer.appendChild(iconElement);
+
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                const randomDuration = 8 + Math.random() * 7;
+
+                iconContainer.style.left = `${randomLeft}%`;
+                iconContainer.style.top = `${randomTop}%`;
+                iconContainer.style.animationDelay = `${randomDelay}s`;
+                iconContainer.style.animationDuration = `${randomDuration}s`;
+
+                particlesContainer.appendChild(iconContainer);
+            }
+        }
+
+        // 页面加载时创建所有动态元素
+        window.addEventListener('load', function() {
+            createParticles();
+            createDigitalRain();
+            createCodeSnippets();
+            createFloatingIcons();
+        });
+    </script>
+</body>
+</html>

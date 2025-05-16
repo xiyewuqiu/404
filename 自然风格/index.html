@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面 - 自然风格</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #388e3c;
+            --accent-color: #81c784;
+            --light-green: #c8e6c9;
+            --dark-green: #1b5e20;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --shadow: 0 10px 30px rgba(0, 50, 0, 0.2);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 自然元素背景 */
+        .nature-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        /* 飘落的叶子 */
+        .leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            z-index: 1;
+            animation: falling 15s infinite linear;
+        }
+        
+        .leaf1 { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232e7d32"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>'); }
+        .leaf2 { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23388e3c"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>'); }
+        .leaf3 { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2381c784"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>'); }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        /* 登录卡片 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: cardAppear 1s ease-out;
+        }
+        
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-header {
+            padding: 30px 30px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .welcome-text h1 {
+            font-size: 22px;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        
+        .welcome-text p {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+        
+        .app-name {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding: 15px 0;
+            letter-spacing: 1px;
+        }
+        
+        .login-form {
+            padding: 20px 30px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--light-text);
+            margin-bottom: 8px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+            outline: none;
+        }
+        
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            color: var(--light-text);
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+        }
+        
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .forgot-password:hover {
+            color: var(--dark-green);
+            text-decoration: underline;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        .login-button:hover {
+            background-color: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(46, 125, 50, 0.4);
+        }
+        
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--light-text);
+        }
+        
+        .register-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .register-link:hover {
+            color: var(--dark-green);
+            text-decoration: underline;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nature-bg" id="nature-bg"></div>
+    
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <div class="welcome-text">
+                    <h1>欢迎回来</h1>
+                    <p>请登录您的账号继续使用</p>
+                </div>
+            </div>
+            
+            <div class="app-name">自然生活</div>
+            
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="username">用户名 / 邮箱</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名或邮箱">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" name="password" placeholder="请输入您的密码">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密码?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-button">登 录</button>
+                    
+                    <div class="register-prompt">
+                        还没有账号? <a href="register.html" class="register-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 创建飘落的叶子
+        function createLeaves() {
+            const natureBg = document.getElementById('nature-bg');
+            const leafCount = 20;
+            
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.classList.add('leaf');
+                
+                // 随机选择叶子类型
+                const leafTypes = ['leaf1', 'leaf2', 'leaf3'];
+                const randomType = leafTypes[Math.floor(Math.random() * leafTypes.length)];
+                leaf.classList.add(randomType);
+                
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomDelay = Math.random() * 15;
+                const randomDuration = 10 + Math.random() * 20;
+                
+                leaf.style.left = `${randomLeft}%`;
+                leaf.style.animationDelay = `${randomDelay}s`;
+                leaf.style.animationDuration = `${randomDuration}s`;
+                
+                natureBg.appendChild(leaf);
+            }
+        }
+        
+        // 页面加载时创建叶子
+        window.addEventListener('load', function() {
+            createLeaves();
+        });
+    </script>
+</body>
+</html>

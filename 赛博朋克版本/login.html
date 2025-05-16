@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <!-- 添加霓虹按钮字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 基础样式 */
+        html,
+        body {
+            margin: 0px;
+            overflow: hidden;
+            height: 100%;
+            font-family: 'Audiowide', sans-serif;
+        }
+
+        /* 背景渐变 */
+        .background-gradient {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            height: 100%;
+            width: 100%;
+            margin: 0px;
+            background: radial-gradient(circle, #240015 0%, #12000b 100%);
+            overflow: hidden;
+            animation: hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 登录表单容器 */
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(35, 0, 20, 0.5);
+            border: 2px solid #ff005d;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(255, 0, 93, 0.5), 0 0 30px rgba(255, 0, 93, 0.3);
+            z-index: 10;
+            backdrop-filter: blur(5px);
+            animation: formReveal 1.5s ease-in-out forwards, hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        /* 标题样式 */
+        .form-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            color: #ff005d;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 5px #ff005d, 0 0 10px rgba(255, 0, 93, 0.6);
+            animation: titleGlow 2s ease-in-out infinite alternate, hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        /* 表单控件容器 */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 输入框样式 */
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1.5px solid rgba(255, 0, 93, 0.3);
+            border-radius: 4px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            outline: none;
+            animation: hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        .form-input:focus {
+            border-color: #ff005d;
+            box-shadow: 0 0 8px rgba(255, 0, 93, 0.6);
+        }
+
+        /* 标签样式 */
+        .form-label {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: #1a000e;
+            padding: 0 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255, 0, 93, 0.8);
+            letter-spacing: 1px;
+            animation: hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        /* 登录按钮样式 */
+        .login-button {
+            width: 100%;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 12px;
+            margin-top: 1rem;
+            color: #ff005d;
+            background: transparent;
+            border: 2px solid #ff005d;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #ff005d, 0 0 20px rgba(255, 0, 93, 0.3);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+            animation: buttonGlow 2s ease-in-out infinite alternate, hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        .login-button:hover {
+            background: rgba(255, 0, 93, 0.1);
+            box-shadow: 0 0 15px #ff005d, 0 0 30px rgba(255, 0, 93, 0.6);
+            transform: scale(1.02);
+            letter-spacing: 3px;
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        /* 链接样式 */
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .form-link {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(255, 0, 93, 0.7);
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            animation: hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        .form-link:hover {
+            color: #ff005d;
+            text-shadow: 0 0 5px #ff005d;
+        }
+
+        /* 失败提示样式 */
+        .error-message {
+            background: rgba(255, 0, 93, 0.1);
+            border-left: 3px solid #ff005d;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: #ff005d;
+            display: none;
+            animation: hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        /* 记住我选项 */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            animation: hueRotate 6s ease-in-out 3s infinite;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: #ff005d;
+        }
+
+        .remember-me label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255, 0, 93, 0.8);
+        }
+
+        /* 动画效果 */
+        @keyframes buttonGlow {
+            0% { box-shadow: 0 0 10px #ff005d, 0 0 20px rgba(255, 0, 93, 0.3); }
+            100% { box-shadow: 0 0 15px #ff005d, 0 0 25px rgba(255, 0, 93, 0.6); }
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 5px #ff005d, 0 0 10px rgba(255, 0, 93, 0.6); }
+            100% { text-shadow: 0 0 8px #ff005d, 0 0 15px rgba(255, 0, 93, 0.8); }
+        }
+
+        @keyframes formReveal {
+            0% { opacity: 0; transform: translate(-50%, -45%); }
+            100% { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        @keyframes hueRotate {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(-120deg); }
+            100% { filter: hue-rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-gradient"></div>
+    <!-- 粒子容器，将由JS生成粒子 -->
+    <div id="particles"></div>
+
+    <div class="login-container">
+        <h1 class="form-title">用户登录</h1>
+        
+        <!-- 错误信息提示 -->
+        <div class="error-message" id="errorMessage">用户名或密码错误，请重试。</div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">用户名 / 邮箱</label>
+                <input type="text" class="form-input" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">密码</label>
+                <input type="password" class="form-input" id="password" name="password" required>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">记住我</label>
+            </div>
+            
+            <button type="submit" class="login-button">登录系统</button>
+        </form>
+        
+        <div class="form-links">
+            <a href="register.html" class="form-link">注册账号</a>
+            <a href="#" class="form-link">忘记密码？</a>
+        </div>
+    </div>
+
+    <!-- 添加粒子效果脚本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 创建粒子效果
+        const particlesContainer = document.getElementById('particles');
+        const numParticles = 100; // 粒子数量
+        
+        // 生成粒子
+        for (let i = 0; i < numParticles; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // 随机粒子大小 (1-3px)
+            const size = Math.random() * 2 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // 随机初始位置
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            particle.style.left = `${x}%`;
+            particle.style.top = `${y}%`;
+            
+            // 随机亮度
+            const opacity = Math.random() * 0.5 + 0.1;
+            particle.style.opacity = opacity;
+            
+            // 添加到容器
+            particlesContainer.appendChild(particle);
+            
+            // 随机动画
+            animateParticle(particle);
+        }
+        
+        // 粒子动画函数
+        function animateParticle(particle) {
+            // 随机动画持续时间 (10-30秒)
+            const duration = Math.random() * 20000 + 10000;
+            
+            // 随机目标位置
+            const targetX = Math.random() * 100;
+            const targetY = Math.random() * 100;
+            
+            // 应用动画
+            particle.animate(
+                [
+                    { 
+                        left: particle.style.left, 
+                        top: particle.style.top,
+                        opacity: particle.style.opacity
+                    },
+                    { 
+                        left: `${targetX}%`, 
+                        top: `${targetY}%`,
+                        opacity: Math.random() * 0.5 + 0.1
+                    }
+                ], 
+                {
+                    duration: duration,
+                    easing: 'linear',
+                    iterations: 1
+                }
+            ).onfinish = function() {
+                // 重置粒子位置
+                particle.style.left = `${targetX}%`;
+                particle.style.top = `${targetY}%`;
+                
+                // 重新应用动画
+                animateParticle(particle);
+            };
+        }
+        
+        // 鼠标移动时粒子轻微跟随效果
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(function(particle) {
+                // 获取当前位置
+                const rect = particle.getBoundingClientRect();
+                const x = rect.left / window.innerWidth * 100;
+                const y = rect.top / window.innerHeight * 100;
+                
+                // 轻微移动粒子 (偏移量很小)
+                const offsetX = (mouseX - 0.5) * 5;
+                const offsetY = (mouseY - 0.5) * 5;
+                
+                // 应用轻微变化
+                particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+        });
+
+        // 表单验证
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 这里应该是向服务器发送登录请求
+            // 这里仅做演示，模拟登录验证
+            if (username === "admin" && password === "password") {
+                errorMessage.style.display = 'none';
+                // 登录成功后跳转
+                window.location.href = "index.html";
+            } else {
+                errorMessage.style.display = 'block';
+                
+                // 添加震动动画
+                loginForm.animate(
+                    [
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-5px)' },
+                        { transform: 'translateX(5px)' },
+                        { transform: 'translateX(-5px)' },
+                        { transform: 'translateX(5px)' },
+                        { transform: 'translateX(0)' }
+                    ],
+                    {
+                        duration: 400,
+                        easing: 'ease-in-out'
+                    }
+                );
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

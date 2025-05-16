@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面 - 灵异中式</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        :root {
+            --primary-color: #8b0000;
+            --secondary-color: #4a0000;
+            --accent-color: #d10000;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --text-color: #d9d9d9;
+            --light-text: #a0a0a0;
+            --paper-color: #f8f0e0;
+            --paper-dark: #e8d8c0;
+            --joss-paper: #f5d742;
+            --joss-paper-dark: #d4b82a;
+            --ink-color: #2b1600;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--dark-bg);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230a0a0a"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23191919" stroke-width="0.5"/></svg>');
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 阴森背景 */
+        .haunted-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(30, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 70%);
+        }
+
+        /* 鬼影 */
+        .ghost {
+            position: absolute;
+            width: 60px;
+            height: 90px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0;
+            z-index: 1;
+            filter: blur(1px);
+            animation: ghostAppear 10s infinite ease-in-out;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23333333"><path d="M12,2A9,9 0 0,0 3,11V22L6,19L9,22L12,19L15,22L18,19L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z" /></svg>');
+        }
+
+        @keyframes ghostAppear {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0) scale(1);
+            }
+            3%, 10% {
+                opacity: 0.3;
+                transform: translateY(-20px) scale(1.1);
+            }
+            13% {
+                opacity: 0;
+                transform: translateY(-30px) scale(1.2);
+            }
+        }
+
+        /* 符咒 */
+        .talisman {
+            position: absolute;
+            width: 40px;
+            height: 80px;
+            background-color: var(--paper-color);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            z-index: 1;
+            transform: rotate(var(--rotation));
+            animation: talismanFloat 20s infinite ease-in-out;
+        }
+
+        .talisman::before {
+            content: "镇";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        @keyframes talismanFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(var(--rotation));
+            }
+            50% {
+                transform: translateY(-20px) rotate(calc(var(--rotation) + 5deg));
+            }
+        }
+
+        /* 黄纸/冥币 */
+        .joss-paper {
+            position: absolute;
+            width: 30px;
+            height: 50px;
+            background-color: var(--joss-paper);
+            border: 1px solid var(--joss-paper-dark);
+            z-index: 1;
+            transform-origin: center;
+            animation: jossPaperFall 15s linear infinite;
+        }
+
+        .joss-paper::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid var(--joss-paper-dark);
+            opacity: 0.7;
+        }
+
+        .joss-paper::after {
+            content: "冥";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .joss-paper-alt::after {
+            content: "币";
+        }
+
+        @keyframes jossPaperFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* 烛光效果 */
+        .candle-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 150, 50, 0.1) 0%, transparent 70%);
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                opacity: 0.7;
+            }
+            20%, 24%, 55% {
+                opacity: 0.5;
+            }
+        }
+
+        /* 登录卡片 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background-color: var(--paper-color);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f0e0"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23e8d8c0" stroke-width="1"/></svg>');
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            animation: cardAppear 1s ease-out;
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path d="M20,20 L180,20 L180,180 L20,180 Z" stroke="%23800000" stroke-width="2" fill="none"/><path d="M40,40 L160,40 L160,160 L40,160 Z" stroke="%23800000" stroke-width="1" fill="none"/></svg>');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            z-index: 0;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            padding: 30px 30px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            background-color: var(--paper-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .logo::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" stroke="%23800000" stroke-width="2" fill="none"/><path d="M30,30 L70,70 M70,30 L30,70" stroke="%23800000" stroke-width="2"/></svg>');
+            background-size: contain;
+            opacity: 0.7;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary-color);
+            z-index: 1;
+        }
+
+        .welcome-text h1 {
+            font-size: 22px;
+            color: var(--ink-color);
+            margin-bottom: 5px;
+            font-weight: 900;
+        }
+
+        .welcome-text p {
+            font-size: 14px;
+            color: var(--ink-color);
+            opacity: 0.7;
+        }
+
+        .app-name {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding: 15px 0;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-form {
+            padding: 20px 30px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--ink-color);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--paper-dark);
+            border: 1px solid var(--ink-color);
+            border-radius: 3px;
+            font-size: 15px;
+            color: var(--ink-color);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            color: var(--ink-color);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: var(--paper-color);
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .login-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--ink-color);
+        }
+
+        .register-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .register-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 20px 20px 15px;
+            }
+
+            .login-form {
+                padding: 15px 20px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="haunted-bg" id="haunted-bg"></div>
+    <div class="candle-light"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-ghost"></i>
+                </div>
+                <div class="welcome-text">
+                    <h1>阴阳两界</h1>
+                    <p>请验明身份，谨慎入内</p>
+                </div>
+            </div>
+
+            <div class="app-name">灵异空间</div>
+
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="username">阳间身份</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名或邮箱">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">冥府密令</label>
+                        <input type="password" id="password" name="password" placeholder="请输入您的密码">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密令?</a>
+                    </div>
+
+                    <button type="submit" class="login-button">入 阴</button>
+
+                    <div class="register-prompt">
+                        尚未入籍阴间? <a href="register.html" class="register-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建鬼影
+        function createGhosts() {
+            const hauntedBg = document.getElementById('haunted-bg');
+            const ghostCount = 5;
+
+            for (let i = 0; i < ghostCount; i++) {
+                const ghost = document.createElement('div');
+                ghost.classList.add('ghost');
+
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 30;
+
+                ghost.style.left = `${randomLeft}%`;
+                ghost.style.top = `${randomTop}%`;
+                ghost.style.animationDelay = `${randomDelay}s`;
+
+                hauntedBg.appendChild(ghost);
+            }
+        }
+
+        // 创建符咒
+        function createTalismans() {
+            const hauntedBg = document.getElementById('haunted-bg');
+            const talismanCount = 3;
+
+            for (let i = 0; i < talismanCount; i++) {
+                const talisman = document.createElement('div');
+                talisman.classList.add('talisman');
+
+                // 随机位置、旋转和延迟
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomRotation = (Math.random() * 40) - 20;
+                const randomDelay = Math.random() * 5;
+
+                talisman.style.left = `${randomLeft}%`;
+                talisman.style.top = `${randomTop}%`;
+                talisman.style.setProperty('--rotation', `${randomRotation}deg`);
+                talisman.style.animationDelay = `${randomDelay}s`;
+
+                hauntedBg.appendChild(talisman);
+            }
+        }
+
+        // 创建黄纸/冥币
+        function createJossPapers() {
+            const hauntedBg = document.getElementById('haunted-bg');
+            const jossPaperCount = 15;
+
+            for (let i = 0; i < jossPaperCount; i++) {
+                const jossPaper = document.createElement('div');
+                jossPaper.classList.add('joss-paper');
+
+                // 随机添加一些"币"字的黄纸
+                if (Math.random() > 0.5) {
+                    jossPaper.classList.add('joss-paper-alt');
+                }
+
+                // 随机位置、旋转和延迟
+                const randomLeft = Math.random() * 100;
+                const randomRotation = (Math.random() * 40) - 20;
+                const randomDelay = Math.random() * 10;
+                const randomDuration = 10 + Math.random() * 15;
+
+                jossPaper.style.left = `${randomLeft}%`;
+                jossPaper.style.transform = `rotate(${randomRotation}deg)`;
+                jossPaper.style.animationDelay = `${randomDelay}s`;
+                jossPaper.style.animationDuration = `${randomDuration}s`;
+
+                hauntedBg.appendChild(jossPaper);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createGhosts();
+            createTalismans();
+            createJossPapers();
+        });
+    </script>
+</body>
+</html>

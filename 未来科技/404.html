@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Noto Sans SC', sans-serif;
+        }
+
+        :root {
+            --primary-color: #00e5ff;
+            --secondary-color: #2979ff;
+            --accent-color: #651fff;
+            --dark-bg: #0a0e17;
+            --darker-bg: #060a12;
+            --card-bg: rgba(16, 23, 41, 0.8);
+            --text-color: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-disabled: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(0, 229, 255, 0.3);
+            --shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--dark-bg);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(41, 121, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(101, 31, 255, 0.1) 0%, transparent 20%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 未来科技背景 */
+        .tech-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* 网格线 */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+        }
+
+        /* 浮动粒子 */
+        .particle {
+            position: absolute;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: 1;
+            filter: blur(1px);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-30px) translateX(30px);
+            }
+            50% {
+                transform: translateY(0) translateX(60px);
+            }
+            75% {
+                transform: translateY(30px) translateX(30px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        /* 数据流 */
+        .data-stream {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--primary-color), transparent);
+            opacity: 0.6;
+            z-index: 1;
+            animation: dataFlow 8s infinite linear;
+        }
+
+        @keyframes dataFlow {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* 404错误卡片 */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .error-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                transparent, 
+                transparent, 
+                var(--primary-color)
+            );
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        .error-card::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            background: var(--card-bg);
+            border-radius: 9px;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .error-number {
+            font-size: 100px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            line-height: 1;
+            position: relative;
+            text-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .error-number::before {
+            content: "404";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: var(--primary-color);
+            opacity: 0.5;
+            filter: blur(8px);
+            animation: glitch 3s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            20%, 80% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(5px);
+            }
+            45% {
+                transform: translateX(-5px);
+            }
+            50% {
+                transform: translateX(0);
+            }
+        }
+
+        .error-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .error-message {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--dark-bg);
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .home-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .home-button i {
+            margin-right: 8px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .error-number {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 20px;
+            }
+            
+            .error-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tech-bg" id="tech-bg">
+        <div class="grid-lines"></div>
+    </div>
+    
+    <div class="container">
+        <div class="error-card">
+            <i class="fas fa-robot error-icon"></i>
+            <div class="error-number">404</div>
+            <h1 class="error-title">数据异常</h1>
+            <p class="error-message">您请求的页面已被量子波动删除<br>或许它已经穿越到了平行宇宙</p>
+            <a href="index.html" class="home-button">
+                <i class="fas fa-home"></i> 返回主系统
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 创建粒子
+        function createParticles() {
+            const techBg = document.getElementById('tech-bg');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 随机大小和位置
+                const size = 2 + Math.random() * 4;
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 20;
+                const randomDuration = 15 + Math.random() * 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${randomLeft}%`;
+                particle.style.top = `${randomTop}%`;
+                particle.style.animationDelay = `${randomDelay}s`;
+                particle.style.animationDuration = `${randomDuration}s`;
+                
+                techBg.appendChild(particle);
+            }
+        }
+        
+        // 创建数据流
+        function createDataStreams() {
+            const techBg = document.getElementById('tech-bg');
+            const streamCount = 15;
+            
+            for (let i = 0; i < streamCount; i++) {
+                const stream = document.createElement('div');
+                stream.classList.add('data-stream');
+                
+                // 随机位置和高度
+                const height = 50 + Math.random() * 150;
+                const randomLeft = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                const randomDuration = 3 + Math.random() * 5;
+                
+                stream.style.height = `${height}px`;
+                stream.style.left = `${randomLeft}%`;
+                stream.style.animationDelay = `${randomDelay}s`;
+                stream.style.animationDuration = `${randomDuration}s`;
+                
+                techBg.appendChild(stream);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createParticles();
+            createDataStreams();
+        });
+    </script>
+</body>
+</html>

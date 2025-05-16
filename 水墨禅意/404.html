@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        :root {
+            --ink-black: #1a1a1a;
+            --ink-gray: #333333;
+            --ink-light: #666666;
+            --paper-white: #f5f5f5;
+            --paper-cream: #f8f4e6;
+            --accent-red: #9e2b25;
+            --accent-gold: #d4af37;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--paper-cream);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 水墨背景 */
+        .ink-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f4e6"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23eeeeee" stroke-width="0.5"/></svg>');
+        }
+
+        /* 水墨元素 */
+        .ink-element {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 1;
+            filter: blur(1px);
+            transform-origin: center;
+            animation: inkFloat 20s infinite ease-in-out;
+        }
+
+        @keyframes inkFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* 禅意圆圈 */
+        .zen-circle {
+            position: absolute;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+            animation: fadeInOut 15s infinite ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(1.1);
+            }
+        }
+
+        /* 404错误卡片 */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .error-card {
+            background-color: var(--paper-white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-icon {
+            font-size: 40px;
+            color: var(--accent-red);
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .error-number {
+            font-size: 100px;
+            font-weight: 900;
+            color: var(--ink-black);
+            margin-bottom: 10px;
+            line-height: 1;
+            background: linear-gradient(45deg, var(--ink-black), var(--ink-gray));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .error-number::after {
+            content: "404";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--ink-black), var(--ink-gray));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.1;
+            transform: translateX(5px) translateY(5px);
+            z-index: -1;
+            filter: blur(4px);
+        }
+
+        .error-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ink-black);
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            font-size: 16px;
+            color: var(--ink-light);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--accent-red);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(158, 43, 37, 0.2);
+        }
+
+        .home-button:hover {
+            background-color: #8a2520;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(158, 43, 37, 0.3);
+        }
+
+        .home-button i {
+            margin-right: 8px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .error-number {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 20px;
+            }
+            
+            .error-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg" id="ink-bg"></div>
+    <div id="zen-elements"></div>
+    
+    <div class="container">
+        <div class="error-card">
+            <i class="fas fa-kite error-icon"></i>
+            <div class="error-number">404</div>
+            <h1 class="error-title">心境迷失</h1>
+            <p class="error-message">您寻找的页面已经随风而去<br>或许它已经化为云烟，融入天地之间</p>
+            <a href="index.html" class="home-button">
+                <i class="fas fa-home"></i> 返回禅境
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 创建水墨元素
+        function createInkElements() {
+            const zenElements = document.getElementById('zen-elements');
+            const inkCount = 5;
+            
+            // 水墨图形SVG
+            const inkShapes = [
+                '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 T20,50" stroke="black" fill="none" stroke-width="2" opacity="0.2"/></svg>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="40" stroke="black" fill="none" stroke-width="2" opacity="0.15"/></svg>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><path d="M30,75 Q75,30 120,75 Q75,120 30,75" stroke="black" fill="none" stroke-width="2" opacity="0.1"/></svg>'
+            ];
+
+            for (let i = 0; i < inkCount; i++) {
+                const inkElement = document.createElement('div');
+                inkElement.classList.add('ink-element');
+                
+                // 随机选择水墨形状
+                const randomShape = inkShapes[Math.floor(Math.random() * inkShapes.length)];
+                inkElement.innerHTML = randomShape;
+                
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                
+                inkElement.style.left = `${randomLeft}%`;
+                inkElement.style.top = `${randomTop}%`;
+                inkElement.style.animationDelay = `${randomDelay}s`;
+                
+                zenElements.appendChild(inkElement);
+            }
+            
+            // 创建禅意圆圈
+            for (let i = 0; i < 3; i++) {
+                const zenCircle = document.createElement('div');
+                zenCircle.classList.add('zen-circle');
+                
+                // 随机大小和位置
+                const size = 100 + Math.random() * 200;
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                
+                zenCircle.style.width = `${size}px`;
+                zenCircle.style.height = `${size}px`;
+                zenCircle.style.left = `${randomLeft}%`;
+                zenCircle.style.top = `${randomTop}%`;
+                zenCircle.style.animationDelay = `${randomDelay}s`;
+                
+                zenElements.appendChild(zenCircle);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createInkElements();
+        });
+    </script>
+</body>
+</html>

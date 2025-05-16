@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面 - 国潮风韵</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        :root {
+            /* 中国传统颜色 */
+            --zhu-red: #b62a25; /* 朱砂红 */
+            --jiang-red: #7c1823; /* 酱红 */
+            --yuan-blue: #4b5cc4; /* 宝石蓝 */
+            --qing-blue: #2376b7; /* 青花蓝 */
+            --bamboo-green: #458b74; /* 竹青 */
+            --green-jade: #00a17b; /* 碧绿 */
+            --ming-yellow: #f8df72; /* 明黄 */
+            --rice-white: #f9f4dc; /* 米白 */
+            --mo-black: #33332c; /* 墨黑 */
+            --hui-gray: #ddddcd; /* 素灰 */
+            
+            /* 应用到主题 */
+            --primary-color: var(--zhu-red);
+            --secondary-color: var(--yuan-blue); 
+            --accent-color: var(--ming-yellow);
+            --dark-red: var(--jiang-red);
+            --light-red: #d04848;
+            --dark-blue: #1c3879;
+            --light-blue: var(--qing-blue);
+            --bg-color: var(--rice-white);
+            --text-color: var(--mo-black);
+            --light-text: #666666;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9f4dc"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23ddddcd" stroke-width="0.5"/></svg>');
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 水墨背景 */
+        .ink-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500"><path d="M200,150 Q300,50 400,200 T300,300 T200,150" fill="%2333332c" opacity="0.3"/></svg>');
+            background-size: cover;
+        }
+
+        /* 梅兰竹菊元素 */
+        .chinese-element {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.7;
+            z-index: 1;
+            animation: elementFall 15s infinite linear;
+        }
+
+        /* 梅花 */
+        .element1 { 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,20 C55,35 70,40 70,50 C70,60 55,65 50,80 C45,65 30,60 30,50 C30,40 45,35 50,20 Z" fill="%23b62a25" opacity="0.9"/><path d="M50,30 C53,40 63,43 63,50 C63,57 53,60 50,70 C47,60 37,57 37,50 C37,43 47,40 50,30 Z" fill="%23ffffff" opacity="0.5"/></svg>');
+            width: 35px;
+            height: 35px;
+        }
+        /* 兰花 */
+        .element2 { 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,20 L50,80" stroke="%234b5cc4" stroke-width="1.5" opacity="0.9"/><path d="M40,30 Q50,40 30,45 Q50,50 30,55 Q50,60 40,70" stroke="%234b5cc4" stroke-width="1.5" fill="none" opacity="0.9"/><path d="M60,30 Q50,40 70,45 Q50,50 70,55 Q50,60 60,70" stroke="%234b5cc4" stroke-width="1.5" fill="none" opacity="0.9"/></svg>');
+            width: 40px;
+            height: 40px;
+        }
+        /* 竹叶 */
+        .element3 { 
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M40,20 L60,20 L60,80 L40,80 Z" fill="%23458b74" opacity="0.2"/><path d="M45,20 L55,20 L55,80 L45,80 Z" fill="%23458b74" opacity="0.4"/><path d="M48,20 L52,20 L52,80 L48,80 Z" fill="%23458b74" opacity="0.9"/><path d="M30,35 Q50,25 70,35" stroke="%23458b74" stroke-width="1.5" fill="none" opacity="0.9"/><path d="M30,45 Q50,35 70,45" stroke="%23458b74" stroke-width="1.5" fill="none" opacity="0.9"/><path d="M30,55 Q50,45 70,55" stroke="%23458b74" stroke-width="1.5" fill="none" opacity="0.9"/><path d="M30,65 Q50,55 70,65" stroke="%23458b74" stroke-width="1.5" fill="none" opacity="0.9"/></svg>');
+            width: 30px;
+            height: 45px;
+        }
+        /* 菊花 */
+        .element4 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="10" fill="%23f8df72" opacity="0.9"/><path d="M50,20 L50,40 M30,30 L40,40 M20,50 L40,50 M30,70 L40,60 M50,80 L50,60 M70,70 L60,60 M80,50 L60,50 M70,30 L60,40" stroke="%23f8df72" stroke-width="4" opacity="0.8"/><path d="M45,25 L50,40 M32,32 L42,40 M25,50 L40,50 M32,68 L42,58 M50,75 L50,60 M68,68 L58,58 M75,50 L60,50 M68,32 L58,40" stroke="%23f8df72" stroke-width="2" opacity="0.6"/></svg>');
+            width: 38px;
+            height: 38px;
+        }
+        /* 中国结 */
+        .element5 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M40,20 L60,20 L60,30 L70,30 L70,50 L80,50 L80,60 L50,60 L50,80 L40,80 L40,60 L20,60 L20,50 L30,50 L30,30 L40,30 Z" fill="%23b62a25" opacity="0.9"/><path d="M44,24 L56,24 L56,34 L66,34 L66,46 L76,46 L76,56 L54,56 L54,76 L44,76 L44,56 L24,56 L24,46 L34,46 L34,34 L44,34 Z" fill="%23f8df72" opacity="0.3"/></svg>');
+            width: 32px;
+            height: 32px;
+        }
+
+        @keyframes elementFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* 传统装饰 */
+        .chinese-decoration {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            animation: decorationFloat 6s infinite ease-in-out;
+        }
+        
+        /* 水墨画 - 梅花 */
+        .decoration-plum {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M80,30 C95,40 85,60 80,70 C75,60 65,40 80,30 Z" stroke="%23b62a25" stroke-width="2" fill="none"/><path d="M120,30 C105,40 115,60 120,70 C125,60 135,40 120,30 Z" stroke="%23b62a25" stroke-width="2" fill="none"/><path d="M100,20 C100,50 100,100 100,180" stroke="%23333" stroke-width="1" fill="none"/><path d="M70,90 C85,100 95,110 100,120 C105,110 115,100 130,90" stroke="%23333" stroke-width="1.5" fill="none"/><path d="M80,120 C90,130 95,140 100,150 C105,140 110,130 120,120" stroke="%23333" stroke-width="1" fill="none"/></svg>');
+            width: 80px;
+            height: 130px;
+        }
+        
+        /* 水墨画 - 兰花 */
+        .decoration-orchid {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M100,20 L100,120" stroke="%23333" stroke-width="1.5" fill="none"/><path d="M60,60 Q100,80 60,100 Q100,110 60,120" stroke="%234b5cc4" stroke-width="1.5" fill="none"/><path d="M140,60 Q100,80 140,100 Q100,110 140,120" stroke="%234b5cc4" stroke-width="1.5" fill="none"/><path d="M85,120 C70,130 60,150 70,170" stroke="%23458b74" stroke-width="1" fill="none"/><path d="M115,120 C130,130 140,150 130,170" stroke="%23458b74" stroke-width="1" fill="none"/></svg>');
+            width: 80px;
+            height: 130px;
+        }
+
+        @keyframes decorationFloat {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-5px) scale(1.02);
+                opacity: 1;
+            }
+        }
+
+        /* 中国传统纹样 */
+        .pattern {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        /* 传统回纹 */
+        .pattern1 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="none"/><path d="M20,20 L180,20 L180,180 L20,180 Z" stroke="%23b62a25" stroke-width="4" fill="none"/><path d="M40,40 L40,160 L160,160 L160,40 Z" stroke="%23b62a25" stroke-width="3" fill="none"/><path d="M60,60 L60,140 L140,140 L140,60 Z" stroke="%23b62a25" stroke-width="2" fill="none"/><path d="M80,80 L80,120 L120,120 L120,80 Z" stroke="%23b62a25" stroke-width="1" fill="none"/><path d="M40,40 L60,60" stroke="%23b62a25" stroke-width="1" fill="none"/><path d="M160,40 L140,60" stroke="%23b62a25" stroke-width="1" fill="none"/><path d="M40,160 L60,140" stroke="%23b62a25" stroke-width="1" fill="none"/><path d="M160,160 L140,140" stroke="%23b62a25" stroke-width="1" fill="none"/></svg>');
+            top: 10%;
+            left: 5%;
+            animation: patternRotate 60s infinite linear;
+        }
+
+        /* 传统青花瓷纹样 */
+        .pattern2 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="none"/><circle cx="100" cy="100" r="80" stroke="%232376b7" stroke-width="2" fill="none"/><path d="M100,20 C130,50 170,80 180,100 C170,120 130,150 100,180 C70,150 30,120 20,100 C30,80 70,50 100,20 Z" stroke="%232376b7" stroke-width="2" fill="none"/><path d="M40,100 L160,100" stroke="%232376b7" stroke-width="1" fill="none"/><path d="M100,40 L100,160" stroke="%232376b7" stroke-width="1" fill="none"/><path d="M56,56 L144,144" stroke="%232376b7" stroke-width="1" fill="none"/><path d="M56,144 L144,56" stroke="%232376b7" stroke-width="1" fill="none"/></svg>');
+            bottom: 10%;
+            right: 5%;
+            animation: patternRotate 50s infinite linear reverse;
+        }
+
+        /* 竹子纹样 */
+        .pattern3 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><rect width="100" height="200" fill="none"/><path d="M30,0 L30,200" stroke="%23458b74" stroke-width="8" fill="none"/><path d="M70,0 L70,200" stroke="%23458b74" stroke-width="8" fill="none"/><path d="M30,40 L30,44" stroke="%23000" stroke-width="1" fill="none"/><path d="M30,80 L30,84" stroke="%23000" stroke-width="1" fill="none"/><path d="M30,120 L30,124" stroke="%23000" stroke-width="1" fill="none"/><path d="M30,160 L30,164" stroke="%23000" stroke-width="1" fill="none"/><path d="M70,20 L70,24" stroke="%23000" stroke-width="1" fill="none"/><path d="M70,60 L70,64" stroke="%23000" stroke-width="1" fill="none"/><path d="M70,100 L70,104" stroke="%23000" stroke-width="1" fill="none"/><path d="M70,140 L70,144" stroke="%23000" stroke-width="1" fill="none"/><path d="M70,180 L70,184" stroke="%23000" stroke-width="1" fill="none"/></svg>');
+            top: 50%;
+            right: 15%;
+            width: 50px;
+            height: 200px;
+            transform: translateY(-50%);
+            animation: bambooSway 8s infinite ease-in-out;
+        }
+
+        @keyframes patternRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes bambooSway {
+            0%, 100% {
+                transform: translateY(-50%) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-50%) rotate(2deg);
+            }
+        }
+
+        /* 水墨飘带效果 */
+        .ink-ribbon {
+            position: absolute;
+            z-index: 0;
+            transform-origin: center;
+            filter: blur(1px);
+        }
+
+        .ink-ribbon1 {
+            width: 200px;
+            height: 40px;
+            top: 10%;
+            left: -60px;
+            background: linear-gradient(90deg, var(--zhu-red), transparent);
+            opacity: 0.15;
+            border-radius: 20px;
+            animation: ribbonWave1 15s infinite ease-in-out;
+        }
+
+        .ink-ribbon2 {
+            width: 180px;
+            height: 35px;
+            bottom: 15%;
+            right: -50px;
+            background: linear-gradient(90deg, transparent, var(--qing-blue));
+            opacity: 0.15;
+            border-radius: 17.5px;
+            animation: ribbonWave2 12s infinite ease-in-out;
+        }
+        
+        .ink-ribbon3 {
+            width: 150px;
+            height: 30px;
+            top: 65%;
+            left: -40px;
+            background: linear-gradient(90deg, var(--bamboo-green), transparent);
+            opacity: 0.15;
+            border-radius: 15px;
+            animation: ribbonWave1 18s infinite ease-in-out;
+            animation-delay: 3s;
+        }
+
+        @keyframes ribbonWave1 {
+            0%, 100% {
+                transform: rotate(10deg) translateY(0) translateX(0) scaleX(1);
+            }
+            50% {
+                transform: rotate(-5deg) translateY(30px) translateX(20px) scaleX(1.1);
+            }
+        }
+        
+        @keyframes ribbonWave2 {
+            0%, 100% {
+                transform: rotate(-10deg) translateY(0) translateX(0) scaleX(1);
+            }
+            50% {
+                transform: rotate(5deg) translateY(-30px) translateX(-20px) scaleX(1.1);
+            }
+        }
+
+        /* 登录卡片 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background-color: var(--rice-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            animation: cardAppear 1s ease-out;
+            border: 1px solid rgba(222, 215, 194, 0.5);
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--zhu-red), var(--qing-blue));
+        }
+        
+        .login-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,100 C30,70 50,90 100,50" stroke="%23b62a25" stroke-width="0.8" fill="none" opacity="0.2"/><path d="M20,100 C40,80 60,90 100,70" stroke="%2300a17b" stroke-width="0.8" fill="none" opacity="0.2"/><path d="M40,100 C50,90 70,85 100,90" stroke="%232376b7" stroke-width="0.8" fill="none" opacity="0.2"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+            transform: rotate(5deg);
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            padding: 30px 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--zhu-red), var(--jiang-red));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(124, 24, 35, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30,50 C40,40 40,30 50,30 C60,30 60,40 70,50 C60,60 60,70 50,70 C40,70 40,60 30,50 Z" stroke="%23ffffff" stroke-width="2" fill="none"/><circle cx="50" cy="50" r="5" stroke="%23ffffff" stroke-width="2" fill="none"/></svg>');
+            background-size: 60% 60%;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+        }
+
+        .welcome-text h1 {
+            font-size: 28px;
+            color: var(--mo-black);
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .welcome-text h1::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--zhu-red), transparent);
+        }
+
+        .welcome-text p {
+            font-size: 14px;
+            color: var(--light-text);
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .login-form {
+            padding: 20px 30px 30px;
+            position: relative;
+        }
+        
+        .login-form::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 15%;
+            width: 70%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--hui-gray), transparent);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--mo-black);
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--hui-gray);
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 4px;
+            font-size: 15px;
+            color: var(--mo-black);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--zhu-red);
+            box-shadow: 0 0 0 3px rgba(182, 42, 37, 0.1);
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            color: var(--jiang-red);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .remember-forgot::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--hui-gray), transparent);
+            opacity: 0.3;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 8px;
+            accent-color: var(--zhu-red);
+        }
+        
+        .remember-me label {
+            position: relative;
+            top: 1px;
+            color: var(--mo-black);
+            opacity: 0.8;
+        }
+
+        .forgot-password {
+            color: var(--zhu-red);
+            text-decoration: none;
+            transition: var(--transition);
+            position: relative;
+            padding-right: 16px;
+        }
+        
+        .forgot-password::after {
+            content: "→";
+            position: absolute;
+            right: 0;
+            top: -1px;
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--jiang-red);
+        }
+        
+        .forgot-password:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--zhu-red), var(--jiang-red));
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(182, 42, 37, 0.2);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 4px;
+        }
+
+        .login-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .login-button::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ming-yellow), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .login-button:hover {
+            background: linear-gradient(135deg, var(--jiang-red), var(--zhu-red));
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(182, 42, 37, 0.3);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+        
+        .login-button:hover::after {
+            opacity: 1;
+        }
+
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--mo-black);
+            opacity: 0.8;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .register-prompt::before {
+            content: "※";
+            font-size: 12px;
+            position: absolute;
+            left: 15%;
+            top: 0;
+            opacity: 0.3;
+            color: var(--zhu-red);
+        }
+        
+        .register-prompt::after {
+            content: "※";
+            font-size: 12px;
+            position: absolute;
+            right: 15%;
+            top: 0;
+            opacity: 0.3;
+            color: var(--zhu-red);
+        }
+
+        .register-link {
+            color: var(--zhu-red);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            padding: 0 2px;
+        }
+        
+        .register-link::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--zhu-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .register-link:hover {
+            color: var(--jiang-red);
+        }
+        
+        .register-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 20px 20px 15px;
+            }
+
+            .login-form {
+                padding: 15px 20px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg"></div>
+    <div id="chinese-elements"></div>
+    
+    <!-- 水墨画装饰 -->
+    <div class="chinese-decoration decoration-plum" style="top: 30px; left: 40px;"></div>
+    <div class="chinese-decoration decoration-orchid" style="bottom: 40px; right: 40px;"></div>
+
+    <!-- 中国传统纹样 -->
+    <div class="pattern pattern1"></div>
+    <div class="pattern pattern2"></div>
+    <div class="pattern pattern3"></div>
+
+    <!-- 水墨飘带效果 -->
+    <div class="ink-ribbon ink-ribbon1"></div>
+    <div class="ink-ribbon ink-ribbon2"></div>
+    <div class="ink-ribbon ink-ribbon3"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo"></div>
+                <div class="welcome-text">
+                    <h1>欢迎回来</h1>
+                    <p>请登录您的账号继续使用</p>
+                </div>
+            </div>
+
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="username">用户名 / 邮箱</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名或邮箱">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" name="password" placeholder="请输入您的密码">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密码?</a>
+                    </div>
+
+                    <button type="submit" class="login-button">登 录</button>
+
+                    <div class="register-prompt">
+                        还没有账号? <a href="register.html" class="register-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建中国元素
+        function createChineseElements() {
+            const elementsContainer = document.getElementById('chinese-elements');
+            const elementCount = 20;
+            const elementTypes = ['element1', 'element2', 'element3', 'element4', 'element5'];
+
+            for (let i = 0; i < elementCount; i++) {
+                const element = document.createElement('div');
+                element.classList.add('chinese-element');
+
+                // 随机选择元素类型
+                const randomType = elementTypes[Math.floor(Math.random() * elementTypes.length)];
+                element.classList.add(randomType);
+
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomDelay = Math.random() * 15;
+                const randomDuration = 10 + Math.random() * 20;
+                const randomRotation = (Math.random() * 40) - 20;
+
+                element.style.left = `${randomLeft}%`;
+                element.style.animationDelay = `${randomDelay}s`;
+                element.style.animationDuration = `${randomDuration}s`;
+                element.style.transform = `rotate(${randomRotation}deg)`;
+
+                elementsContainer.appendChild(element);
+            }
+        }
+
+        // 添加水墨效果
+        function enhanceInkEffect() {
+            const inkBg = document.querySelector('.ink-bg');
+
+            // 添加随机水墨斑点
+            for (let i = 0; i < 5; i++) {
+                const inkSpot = document.createElement('div');
+                inkSpot.style.position = 'absolute';
+                inkSpot.style.width = `${50 + Math.random() * 100}px`;
+                inkSpot.style.height = `${50 + Math.random() * 100}px`;
+                inkSpot.style.borderRadius = '50%';
+                inkSpot.style.background = 'rgba(0, 0, 0, 0.05)';
+                inkSpot.style.top = `${Math.random() * 100}%`;
+                inkSpot.style.left = `${Math.random() * 100}%`;
+                inkSpot.style.filter = 'blur(10px)';
+                inkSpot.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                inkBg.appendChild(inkSpot);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createChineseElements();
+            enhanceInkEffect();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面 - 水墨禅意</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        :root {
+            --ink-black: #1a1a1a;
+            --ink-gray: #333333;
+            --ink-light: #666666;
+            --paper-white: #f5f5f5;
+            --paper-cream: #f8f4e6;
+            --accent-red: #9e2b25;
+            --accent-gold: #d4af37;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--paper-cream);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 水墨背景 */
+        .ink-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f4e6"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23eeeeee" stroke-width="0.5"/></svg>');
+        }
+
+        /* 水墨元素 */
+        .ink-element {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 1;
+            filter: blur(1px);
+            transform-origin: center;
+            animation: inkFloat 20s infinite ease-in-out;
+        }
+
+        @keyframes inkFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* 禅意圆圈 */
+        .zen-circle {
+            position: absolute;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+            animation: fadeInOut 15s infinite ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(1.1);
+            }
+        }
+
+        /* 登录容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .login-card {
+            background-color: var(--paper-white);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .login-header {
+            display: flex;
+            align-items: center;
+            padding: 30px 30px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .welcome-text h1 {
+            font-size: 20px;
+            color: var(--ink-black);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .welcome-text p {
+            font-size: 14px;
+            color: var(--ink-light);
+        }
+
+        .app-name {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 16px;
+            color: var(--ink-gray);
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .app-name::before,
+        .app-name::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 1px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .app-name::before {
+            left: 30%;
+        }
+
+        .app-name::after {
+            right: 30%;
+        }
+
+        .login-form {
+            padding: 20px 30px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--ink-gray);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--ink-black);
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(158, 43, 37, 0.1);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 38px;
+            color: var(--ink-light);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 5px;
+        }
+
+        .forgot-password {
+            color: var(--accent-red);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 15px;
+        }
+
+        .login-button:hover {
+            background-color: #8a2520;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(158, 43, 37, 0.3);
+        }
+
+        .register-prompt {
+            text-align: center;
+            font-size: 14px;
+            color: var(--ink-light);
+        }
+
+        .register-link {
+            color: var(--accent-red);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .register-link::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--accent-red);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .register-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg" id="ink-bg"></div>
+    <div id="zen-elements"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-yin-yang"></i>
+                </div>
+                <div class="welcome-text">
+                    <h1>静心入境</h1>
+                    <p>请登录您的账号继续使用</p>
+                </div>
+            </div>
+
+            <div class="app-name">禅意空间</div>
+
+            <div class="login-form">
+                <form>
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" name="username" placeholder="请输入您的用户名或邮箱">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" name="password" placeholder="请输入您的密码">
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <div class="remember-forgot">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密码?</a>
+                    </div>
+
+                    <button type="submit" class="login-button">登 录</button>
+
+                    <div class="register-prompt">
+                        还没有账号? <a href="register.html" class="register-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建水墨元素
+        function createInkElements() {
+            const zenElements = document.getElementById('zen-elements');
+            const inkCount = 5;
+            
+            // 水墨图形SVG
+            const inkShapes = [
+                '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 T20,50" stroke="black" fill="none" stroke-width="2" opacity="0.2"/></svg>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="40" stroke="black" fill="none" stroke-width="2" opacity="0.15"/></svg>',
+                '<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><path d="M30,75 Q75,30 120,75 Q75,120 30,75" stroke="black" fill="none" stroke-width="2" opacity="0.1"/></svg>'
+            ];
+
+            for (let i = 0; i < inkCount; i++) {
+                const inkElement = document.createElement('div');
+                inkElement.classList.add('ink-element');
+                
+                // 随机选择水墨形状
+                const randomShape = inkShapes[Math.floor(Math.random() * inkShapes.length)];
+                inkElement.innerHTML = randomShape;
+                
+                // 随机位置和延迟
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                
+                inkElement.style.left = `${randomLeft}%`;
+                inkElement.style.top = `${randomTop}%`;
+                inkElement.style.animationDelay = `${randomDelay}s`;
+                
+                zenElements.appendChild(inkElement);
+            }
+            
+            // 创建禅意圆圈
+            for (let i = 0; i < 3; i++) {
+                const zenCircle = document.createElement('div');
+                zenCircle.classList.add('zen-circle');
+                
+                // 随机大小和位置
+                const size = 100 + Math.random() * 200;
+                const randomLeft = Math.random() * 100;
+                const randomTop = Math.random() * 100;
+                const randomDelay = Math.random() * 5;
+                
+                zenCircle.style.width = `${size}px`;
+                zenCircle.style.height = `${size}px`;
+                zenCircle.style.left = `${randomLeft}%`;
+                zenCircle.style.top = `${randomTop}%`;
+                zenCircle.style.animationDelay = `${randomDelay}s`;
+                
+                zenElements.appendChild(zenCircle);
+            }
+        }
+
+        // 页面加载时创建元素
+        window.addEventListener('load', function() {
+            createInkElements();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册账户</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #0d47a1;
+            --light-blue: #42a5f5;
+            --dark-blue: #002171;
+            --night-blue: #030B2E;
+            --deep-space: #01051e;
+            --text-color: #333;
+            --light-text: #666;
+            --white: #fff;
+            --shadow: 0 10px 30px rgba(0, 10, 50, 0.3);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(ellipse at bottom, var(--night-blue) 0%, var(--deep-space) 100%);
+            overflow: hidden;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        /* 星星背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: twinkle 4s infinite ease-in-out;
+            box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.4);
+        }
+        
+        .star.star-large {
+            width: 3px;
+            height: 3px;
+            opacity: 0.85;
+            box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.6);
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.1);
+            }
+        }
+        
+        /* 添加北极光效果 */
+        .aurora {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .aurora-light {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(to top, 
+                rgba(18, 25, 77, 0) 0%,
+                rgba(29, 136, 221, 0.1) 40%, 
+                rgba(43, 175, 255, 0.2) 60%, 
+                rgba(29, 136, 221, 0.1) 80%,
+                rgba(18, 25, 77, 0) 100%);
+            filter: blur(30px);
+            transform-origin: bottom center;
+            animation: aurora-wave 20s infinite ease-in-out;
+        }
+        
+        .aurora-light:nth-child(2) {
+            left: -20%;
+            width: 140%;
+            height: 200px;
+            background: linear-gradient(to top, 
+                rgba(18, 25, 77, 0) 0%,
+                rgba(10, 155, 117, 0.1) 40%, 
+                rgba(32, 226, 170, 0.2) 60%, 
+                rgba(10, 155, 117, 0.1) 80%,
+                rgba(18, 25, 77, 0) 100%);
+            animation-delay: -5s;
+            animation-duration: 25s;
+        }
+        
+        .aurora-light:nth-child(3) {
+            left: -40%;
+            width: 180%;
+            height: 250px;
+            background: linear-gradient(to top, 
+                rgba(18, 25, 77, 0) 0%,
+                rgba(160, 82, 238, 0.1) 40%, 
+                rgba(188, 137, 255, 0.2) 60%, 
+                rgba(160, 82, 238, 0.1) 80%,
+                rgba(18, 25, 77, 0) 100%);
+            animation-delay: -10s;
+            animation-duration: 30s;
+        }
+        
+        @keyframes aurora-wave {
+            0%, 100% {
+                transform: scaleX(1) translateX(0);
+            }
+            25% {
+                transform: scaleX(1.2) translateX(5%);
+            }
+            50% {
+                transform: scaleX(0.8) translateX(-5%);
+            }
+            75% {
+                transform: scaleX(1.1) translateX(3%);
+            }
+        }
+        
+        /* 流星效果 */
+        .meteor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .meteor {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1) 50%, rgba(255,255,255,0));
+            border-radius: 50%;
+            z-index: 1;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+        }
+        
+        .meteor::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: 0;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.9);
+            background: white;
+        }
+        
+        .meteor-1 {
+            width: 150px;
+            animation: meteor-1 6s infinite ease-out;
+            opacity: 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1) 50%, rgba(255,255,255,0.8));
+        }
+        
+        @keyframes meteor-1 {
+            0% {
+                transform: translateX(-150px) translateY(-100px) rotate(-45deg);
+                opacity: 1;
+            }
+            15% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(calc(100vw + 150px)) translateY(calc(100vh + 150px)) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 注册容器 */
+        .register-container {
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            z-index: 2;
+            transform-style: preserve-3d;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotateX(2deg) rotateY(2deg);
+            }
+            50% {
+                transform: translateY(-15px) rotateX(-2deg) rotateY(-2deg);
+            }
+        }
+        
+        /* 注册卡片 */
+        .register-card {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow), 0 20px 50px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+        
+        /* 背景光晕效果 */
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(142, 186, 255, 0.15) 0%, transparent 60%);
+            opacity: 0.6;
+            animation: rotate 15s infinite linear;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* 标题 */
+        .register-title {
+            margin-bottom: 40px;
+        }
+        
+        .register-title .icon {
+            font-size: 60px;
+            color: var(--light-blue);
+            margin-bottom: 15px;
+            animation: icon-glow 3s infinite alternate;
+            display: inline-block;
+        }
+        
+        @keyframes icon-glow {
+            0% {
+                text-shadow: 0 0 15px rgba(66, 165, 245, 0.5);
+                transform: scale(1);
+            }
+            100% {
+                text-shadow: 0 0 30px rgba(66, 165, 245, 0.8);
+                transform: scale(1.1);
+            }
+        }
+        
+        .register-title h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 149, 255, 0.5);
+        }
+        
+        .register-title p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        /* 表单样式 */
+        .register-form {
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-control {
+            width: 100%;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px 15px 15px 45px;
+            font-size: 16px;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(66, 165, 245, 0.5);
+            box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.15);
+            outline: none;
+        }
+        
+        .form-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+        }
+        
+        .form-control:focus + .form-icon {
+            color: var(--light-blue);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .password-toggle:hover {
+            color: var(--light-blue);
+        }
+        
+        /* 注册按钮 */
+        .register-button {
+            display: block;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .register-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary-color), var(--light-blue));
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .register-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 82, 204, 0.4);
+        }
+        
+        .register-button:hover::before {
+            left: 0;
+        }
+        
+        /* 已有账号提示 */
+        .login-prompt {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .login-link {
+            color: var(--light-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            text-shadow: 0 0 10px rgba(66, 165, 245, 0.4);
+        }
+        
+        .login-link:hover {
+            text-shadow: 0 0 15px rgba(66, 165, 245, 0.7);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .register-container {
+                width: 95%;
+                max-width: 380px;
+            }
+            
+            .register-card {
+                padding: 30px 20px;
+            }
+            
+            .register-title .icon {
+                font-size: 50px;
+            }
+            
+            .register-title h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="aurora">
+        <div class="aurora-light"></div>
+        <div class="aurora-light"></div>
+        <div class="aurora-light"></div>
+    </div>
+    <div class="meteor-container" id="meteor-container"></div>
+    
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-title">
+                <i class="fas fa-user-astronaut icon"></i>
+                <h1>创建您的账户</h1>
+                <p>开始您的星际旅程，探索无限可能</p>
+            </div>
+            
+            <form class="register-form" id="register-form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="username" placeholder="用户名" required>
+                    <i class="fas fa-user form-icon"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" class="form-control" id="email" placeholder="电子邮箱" required>
+                    <i class="fas fa-envelope form-icon"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" placeholder="密码" required>
+                    <i class="fas fa-lock form-icon"></i>
+                    <i class="fas fa-eye-slash password-toggle" id="password-toggle"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" class="form-control" id="confirm-password" placeholder="确认密码" required>
+                    <i class="fas fa-lock form-icon"></i>
+                    <i class="fas fa-eye-slash password-toggle" id="confirm-password-toggle"></i>
+                </div>
+                
+                <button type="submit" class="register-button">注 册</button>
+                
+                <div class="login-prompt">
+                    已有账号? <a href="index.html" class="login-link">立即登录</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 创建星星背景
+        function createStars() {
+            const stars = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 创建一些较大的星星
+                if (Math.random() > 0.8) {
+                    star.classList.add('star-large');
+                }
+                
+                // 添加一些彩色星星
+                if (Math.random() > 0.9) {
+                    const colors = ['#8fcaff', '#ffcb8f', '#a8ff8f', '#ff8fdb'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    star.style.backgroundColor = randomColor;
+                    star.style.boxShadow = `0 0 6px 1px ${randomColor}`;
+                }
+                
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                star.style.left = `${posX}px`;
+                star.style.top = `${posY}px`;
+                
+                const delay = Math.random() * 4;
+                star.style.animationDelay = `${delay}s`;
+                
+                // 持续时间变化
+                const duration = Math.random() * 2 + 3;
+                star.style.animationDuration = `${duration}s`;
+                
+                stars.appendChild(star);
+            }
+        }
+        
+        // 创建流星
+        function createMeteors() {
+            const container = document.getElementById('meteor-container');
+            // 注册页面减少流星数量，避免干扰用户填写表单
+            const meteorCount = 20;
+            
+            for (let i = 0; i < meteorCount; i++) {
+                const meteor = document.createElement('div');
+                meteor.classList.add('meteor', 'meteor-1');
+                
+                // 随机位置
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                meteor.style.left = `${posX}px`;
+                meteor.style.top = `${posY}px`;
+                
+                // 随机延迟，确保流星不会同时出现
+                const delay = Math.random() * 20;
+                meteor.style.animationDelay = `${delay}s`;
+                
+                // 随机动画持续时间
+                const duration = Math.random() * 12 + 6;
+                meteor.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(meteor);
+            }
+            
+            // 动态添加更多流星
+            setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    const meteor = document.createElement('div');
+                    meteor.classList.add('meteor', 'meteor-1');
+                    
+                    const posX = Math.random() * window.innerWidth;
+                    const posY = Math.random() * window.innerHeight;
+                    meteor.style.left = `${posX}px`;
+                    meteor.style.top = `${posY}px`;
+                    
+                    const duration = Math.random() * 12 + 6;
+                    meteor.style.animationDuration = `${duration}s`;
+                    
+                    // 设置动画结束后自动移除元素
+                    meteor.addEventListener('animationend', function() {
+                        if (this.parentNode) {
+                            this.parentNode.removeChild(this);
+                        }
+                    });
+                    
+                    container.appendChild(meteor);
+                }
+            }, 2000);
+        }
+        
+        // 密码可见性切换
+        function togglePassword() {
+            const toggleElements = [
+                { input: document.getElementById('password'), toggle: document.getElementById('password-toggle') },
+                { input: document.getElementById('confirm-password'), toggle: document.getElementById('confirm-password-toggle') }
+            ];
+            
+            toggleElements.forEach(item => {
+                if (item.toggle) {
+                    item.toggle.addEventListener('click', function() {
+                        if (item.input.type === 'password') {
+                            item.input.type = 'text';
+                            item.toggle.classList.remove('fa-eye-slash');
+                            item.toggle.classList.add('fa-eye');
+                        } else {
+                            item.input.type = 'password';
+                            item.toggle.classList.remove('fa-eye');
+                            item.toggle.classList.add('fa-eye-slash');
+                        }
+                    });
+                }
+            });
+        }
+        
+        // 鼠标移动效果
+        function mouseMoveEffect() {
+            document.addEventListener('mousemove', function(e) {
+                const container = document.querySelector('.register-container');
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
+                container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+        }
+        
+        // 表单验证
+        function setupFormValidation() {
+            const form = document.getElementById('register-form');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm-password');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 简单的密码匹配验证
+                if (password.value !== confirmPassword.value) {
+                    alert('两次输入的密码不一致，请重新输入！');
+                    return;
+                }
+                
+                // 在这里可以添加其他验证逻辑和表单提交代码
+                console.log('表单验证通过，准备提交...');
+                // form.submit(); // 取消注释以启用实际提交
+                
+                // 模拟成功提交效果
+                alert('注册成功！欢迎加入我们的星际旅程！');
+                window.location.href = 'index.html';
+            });
+        }
+        
+        // 页面加载完成后执行
+        window.addEventListener('load', function() {
+            createStars();
+            createMeteors();
+            togglePassword();
+            mouseMoveEffect();
+            setupFormValidation();
+        });
+    </script>
+</body>
+</html> 
